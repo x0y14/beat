@@ -1,5 +1,7 @@
 package core
 
+import "fmt"
+
 type Types interface {
 	String() string
 }
@@ -20,4 +22,18 @@ func (p Primitive) String() string {
 		Bool:  "Bool",
 	}
 	return types[p]
+}
+
+func GetDataTypeByIdent(ident string) (Primitive, error) {
+	switch ident {
+	case "int":
+		return Int, nil
+	case "float":
+		return Float, nil
+	case "string":
+		return String, nil
+	case "bool":
+		return Bool, nil
+	}
+	return 0, fmt.Errorf("unregistered type: %s", ident)
 }
