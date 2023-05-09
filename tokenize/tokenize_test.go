@@ -32,22 +32,22 @@ func TestTokenize(t *testing.T) {
 			"add",
 			"1 + 1",
 			&Token{
-				kind:    Int,
-				pos:     GenPosForTest(""),
-				literal: core.NewLiteral(1),
-				next: &Token{
-					kind:    Add,
-					pos:     GenPosForTest("1 "),
-					literal: nil,
-					next: &Token{
-						kind:    Int,
-						pos:     GenPosForTest("1 + "),
-						literal: core.NewLiteral(1),
-						next: &Token{
-							kind:    Eof,
-							pos:     GenPosForTest("1 + 1"),
-							literal: nil,
-							next:    nil,
+				Kind: Int,
+				Pos:  GenPosForTest(""),
+				Lit:  core.NewLiteral(1),
+				Next: &Token{
+					Kind: Add,
+					Pos:  GenPosForTest("1 "),
+					Lit:  nil,
+					Next: &Token{
+						Kind: Int,
+						Pos:  GenPosForTest("1 + "),
+						Lit:  core.NewLiteral(1),
+						Next: &Token{
+							Kind: Eof,
+							Pos:  GenPosForTest("1 + 1"),
+							Lit:  nil,
+							Next: nil,
 						},
 					},
 				},

@@ -265,5 +265,5 @@ Loop:
 		return nil, fmt.Errorf("unexpected charactor: %s", string(userInput[curtPos.Wat]))
 	}
 	cur = Chain(cur, NewEofToken(curtPos.Clone()))
-	return head.next, nil
+	return head.Next, nil
 }

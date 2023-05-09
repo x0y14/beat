@@ -6,18 +6,18 @@ import (
 )
 
 type Token struct {
-	kind    TokenKind
-	pos     *core.Position
-	literal *core.Literal
-	next    *Token
+	Kind TokenKind
+	Pos  *core.Position
+	Lit  *core.Literal
+	Next *Token
 }
 
 func NewToken(kind TokenKind, pos *core.Position, lit *core.Literal) *Token {
 	return &Token{
-		kind:    kind,
-		pos:     pos,
-		literal: lit,
-		next:    nil,
+		Kind: kind,
+		Pos:  pos,
+		Lit:  lit,
+		Next: nil,
 	}
 }
 
@@ -25,16 +25,16 @@ func NewIdentToken(pos *core.Position, ident string) *Token {
 	return NewToken(Ident, pos, core.NewLiteral(ident))
 }
 
-//func NewCommentToken(pos *core.Position, comment string) *Token {
-//	return NewToken(Comment, pos, core.NewLiteral(comment))
+//func NewCommentToken(Pos *core.Position, comment string) *Token {
+//	return NewToken(Comment, Pos, core.NewLiteral(comment))
 //}
 //
-//func NewWhiteToken(pos *core.Position, white string) *Token {
-//	return NewToken(White, pos, core.NewLiteral(white))
+//func NewWhiteToken(Pos *core.Position, white string) *Token {
+//	return NewToken(White, Pos, core.NewLiteral(white))
 //}
 //
-//func NewLineToken(pos *core.Position, nl string) *Token {
-//	return NewToken(Newline, pos, core.NewLiteral(nl))
+//func NewLineToken(Pos *core.Position, nl string) *Token {
+//	return NewToken(Newline, Pos, core.NewLiteral(nl))
 //}
 
 func NewLiteralToken(pos *core.Position, lit *core.Literal) (*Token, error) {
@@ -46,7 +46,7 @@ func NewLiteralToken(pos *core.Position, lit *core.Literal) (*Token, error) {
 	case core.String:
 		return NewToken(String, pos, lit), nil
 	default:
-		return nil, fmt.Errorf("unsuppoted literal kind: %s", lit.GetKind().String())
+		return nil, fmt.Errorf("unsuppoted Lit Kind: %s", lit.GetKind().String())
 	}
 }
 
@@ -129,7 +129,7 @@ func NewEofToken(pos *core.Position) *Token {
 }
 
 func Chain(cur *Token, next *Token) *Token {
-	cur.next = next
+	cur.Next = next
 	return next
 }
 
