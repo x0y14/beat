@@ -3,7 +3,7 @@ package core
 import "fmt"
 
 type Literal struct {
-	typ Types
+	typ Type
 	i   int
 	f   float64
 	s   string
@@ -43,7 +43,7 @@ func (l *Literal) String() string {
 	return fmt.Sprintf("Literal{ kind: %s, value: %v }", l.typ.String(), v)
 }
 
-func (l *Literal) GetKind() Types {
+func (l *Literal) GetKind() Type {
 	return l.typ
 }
 

@@ -31,7 +31,7 @@ func NewNode(kind NodeKind, pos *core.Position) *Node {
 	return &Node{Kind: kind, Pos: pos}
 }
 
-func NewDataTypeNode(pos *core.Position, typ core.Types) *Node {
+func NewDataTypeNode(pos *core.Position, typ core.Type) *Node {
 	n := NewNode(DataType, pos)
 	n.DataTypeField = &DataTypeField{Type: typ}
 	return n

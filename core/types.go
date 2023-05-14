@@ -2,7 +2,7 @@ package core
 
 import "fmt"
 
-type Types interface {
+type Type interface {
 	String() string
 }
 
