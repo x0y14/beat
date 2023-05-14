@@ -3,8 +3,8 @@ package typecheck
 import "github.com/x0y14/beat/core"
 
 type TFunction struct {
-	Params  []*Variable
-	Returns []*Variable
+	Params  []*TVariable
+	Returns []*TVariable
 	*TypeTree
 }
 type TVariable struct {
