@@ -87,7 +87,6 @@ package typecheck
 //		}
 //	}
 //
-//	// todo
 //	curtFn = f
 //
 //	global.SetFn(name, f)
@@ -173,7 +172,6 @@ package typecheck
 //			return nil, err
 //		}
 //		if len(t) != 1 {
-//			// todo: パースで処理すべき
 //			return nil, fmt.Errorf("複数の変数を同時に定義することはできない")
 //		}
 //		_, err = curtFn.SetVar(name, t[0])
@@ -354,7 +352,6 @@ package typecheck
 //func literal(node *parse.Node) ([]core.Type, error) {
 //	switch node.Kind {
 //	case parse.Parenthesis:
-//		// todo
 //		return nil, nil
 //	case parse.Ident:
 //		ident := node.IdentField.Ident
@@ -376,7 +373,6 @@ package typecheck
 //		return nil, fmt.Errorf("未定義変数: %s", ident)
 //	case parse.Call:
 //		// 型が複数の可能性あり, ex) f() (string, bool)
-//		// todo
 //		// なかったらunknownへ
 //		return nil, nil
 //	default:
