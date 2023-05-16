@@ -47,6 +47,11 @@ func NewTypeTree() *TypeTree {
 	}
 }
 
+func (tt *TypeTree) AppendLowerWithParentInfo(t *TypeTree) {
+	t.Parent = tt
+	tt.Lower = append(tt.Lower, t)
+}
+
 type TypeChecker struct {
 	curtNest int       // 深さ
 	curtTree *TypeTree // 現在参照してるやつ
