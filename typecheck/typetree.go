@@ -4,27 +4,27 @@ import (
 	"github.com/x0y14/beat/core"
 )
 
-type TFunction struct {
-	Params  []*TVariable
-	Returns []*TVariable
+type Function struct {
+	Params  []*Variable
+	Returns []*Variable
 	*TypeTree
 }
 
-func NewFunction(params, returns []*TVariable) *TFunction {
-	return &TFunction{
+func NewFunction(params, returns []*Variable) *Function {
+	return &Function{
 		Params:   params,
 		Returns:  returns,
 		TypeTree: &TypeTree{},
 	}
 }
 
-type TVariable struct {
+type Variable struct {
 	Name string
 	Type core.Type
 }
 
-func NewVariable(name string, typ core.Type) *TVariable {
-	return &TVariable{
+func NewVariable(name string, typ core.Type) *Variable {
+	return &Variable{
 		Name: name,
 		Type: typ,
 	}
@@ -33,16 +33,16 @@ func NewVariable(name string, typ core.Type) *TVariable {
 type TypeTree struct {
 	// Nest 0がグローバル, 1が関数, 2が関数内のForとか, 3がForの中のIFとか, ...
 	Parent *TypeTree
-	F      map[string]*TFunction
-	V      map[string]*TVariable
+	F      map[string]*Function
+	V      map[string]*Variable
 	Lower  []*TypeTree
 }
 
 func NewTypeTree() *TypeTree {
 	return &TypeTree{
 		Parent: nil,
-		F:      map[string]*TFunction{},
-		V:      map[string]*TVariable{},
+		F:      map[string]*Function{},
+		V:      map[string]*Variable{},
 		Lower:  []*TypeTree{},
 	}
 }
@@ -86,7 +86,7 @@ func (tc *TypeChecker) GoDeeper() {
 	tc.curtNest++
 }
 
-func (tc *TypeChecker) SetFunction(name string, f *TFunction, focus bool) {
+func (tc *TypeChecker) SetFunction(name string, f *Function, focus bool) {
 	// 親の設定
 	f.Parent = tc.curtTree
 	// 名前対応表に追加
@@ -98,11 +98,11 @@ func (tc *TypeChecker) SetFunction(name string, f *TFunction, focus bool) {
 	}
 }
 
-func (tc *TypeChecker) SetVariable(name string, v *TVariable) {
+func (tc *TypeChecker) SetVariable(name string, v *Variable) {
 	tc.curtTree.V[name] = v
 }
 
-func (tc *TypeChecker) FindFunctionInCurrent(name string, focus bool) (*TFunction, bool) {
+func (tc *TypeChecker) FindFunctionInCurrent(name string, focus bool) (*Function, bool) {
 	// todo: test
 	for fName, f := range tc.curtTree.F {
 		if fName == name {
@@ -115,7 +115,7 @@ func (tc *TypeChecker) FindFunctionInCurrent(name string, focus bool) (*TFunctio
 	return nil, false
 }
 
-func (tc *TypeChecker) FindFunctionConsiderNest(name string, focus bool) (*TFunction, bool) {
+func (tc *TypeChecker) FindFunctionConsiderNest(name string, focus bool) (*Function, bool) {
 	// todo: test
 	f, ok := tc.FindFunctionInCurrent(name, focus)
 	if ok {
@@ -135,7 +135,7 @@ func (tc *TypeChecker) FindFunctionConsiderNest(name string, focus bool) (*TFunc
 	return nil, false
 }
 
-func (tc *TypeChecker) FindVariableInCurrent(name string) (*TVariable, bool) {
+func (tc *TypeChecker) FindVariableInCurrent(name string) (*Variable, bool) {
 	for _, v := range tc.curtTree.V {
 		if v.Name == name {
 			return v, true
@@ -144,7 +144,7 @@ func (tc *TypeChecker) FindVariableInCurrent(name string) (*TVariable, bool) {
 	return nil, false
 }
 
-func (tc *TypeChecker) FindVariableConsiderNest(name string) (*TVariable, bool) {
+func (tc *TypeChecker) FindVariableConsiderNest(name string) (*Variable, bool) {
 	// 現在の深さで探してみる
 	v, ok := tc.FindVariableInCurrent(name)
 	if ok {
