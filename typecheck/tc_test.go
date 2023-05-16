@@ -67,10 +67,12 @@ func TestTypeTree_01(t *testing.T) {
 
 func TestTypeChecker_02(t *testing.T) {
 	tc := NewTypeChecker()
-	tc.SetFunction("f1", NewFunction(nil, nil), false)                                               // 関数f1をグローバルに作成
-	tc.SetFunction("main", NewFunction(nil, nil), true)                                              // 関数mainをグローバルに作成 注目
-	assert.Equal(t, []any{(*TFunction)(nil), false}, M(tc.FindFunctionInCurrent("f1", false)))       // mainから動かずにf1を検索
-	assert.Equal(t, []any{NewFunction(nil, nil), true}, M(tc.FindFunctionConsiderNest("f1", false))) // mainから動いて検索
+	tc.SetFunction("f1", NewFunction(nil, nil), false)                                         // 関数f1をグローバルに作成
+	tc.SetFunction("main", NewFunction(nil, nil), true)                                        // 関数mainをグローバルに作成 注目
+	assert.Equal(t, []any{(*TFunction)(nil), false}, M(tc.FindFunctionInCurrent("f1", false))) // mainから動かずにf1を検索
+	parented := NewFunction(nil, nil)
+	parented.Parent = tc.Tree
+	assert.Equal(t, []any{parented, true}, M(tc.FindFunctionConsiderNest("f1", false))) // mainから動いて検索
 }
 
 func TestTypeTree_AppendLowerWithParentInfo(t *testing.T) {
