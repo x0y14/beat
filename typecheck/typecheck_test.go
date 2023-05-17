@@ -110,3 +110,32 @@ func main() int {
 
 	assert.Equal(t, expectTree, tree)
 }
+
+func TestTypeChecker_check_02(t *testing.T) {
+	code := `
+func main() int {
+	var x int = 1
+	return x
+}
+`
+	tokens, err := tokenize.Tokenize(code)
+	if err != nil {
+		t.Fatal(err)
+	}
+	nodes, err := parse.Parse(tokens)
+	if err != nil {
+		t.Fatal(err)
+	}
+	tree, err := TypeCheck(nodes)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expectTree := NewTypeTree()
+	fMain := NewFunction(nil, []*Variable{NewVariable("", core.Int)})
+	fMain.TypeTree = NewTypeTree()
+	fMain.TypeTree.V["x"] = NewVariable("x", core.Int)
+	fMain.Parent = expectTree
+	expectTree.F["main"] = fMain
+	assert.Equal(t, expectTree, tree)
+}

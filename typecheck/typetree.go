@@ -14,7 +14,7 @@ func NewFunction(params, returns []*Variable) *Function {
 	return &Function{
 		Params:   params,
 		Returns:  returns,
-		TypeTree: &TypeTree{},
+		TypeTree: NewTypeTree(),
 	}
 }
 

@@ -226,8 +226,41 @@ func expr(node *parse.Node) ([]core.Type, error) {
 func assign(node *parse.Node) ([]core.Type, error) {
 	switch node.Kind {
 	case parse.VarDecl:
+		name := node.VarDeclField.Identifier.IdentField.Ident
+		typ := node.VarDeclField.Type.DataTypeField.Type
+		tc.SetVariable(name, NewVariable(name, typ))
+		return nil, nil
 	case parse.ShortVarDecl:
 	case parse.Assign:
+		// 値から計算する
+		valNode := node.AssignField.Value
+		valType, err := expr(valNode)
+		if err != nil {
+			return nil, err
+		}
+		target := node.AssignField.To
+		switch target.Kind {
+		case parse.VarDecl:
+			name := target.VarDeclField.Identifier.IdentField.Ident
+			typ := target.VarDeclField.Type.DataTypeField.Type
+			if !isSameType(wrap(typ), valType) {
+				return nil, fmt.Errorf("代入先と代入元の型が異なる: %v, %v", wrap(typ), valType)
+			}
+			tc.SetVariable(name, NewVariable(name, typ))
+			return nil, nil
+		case parse.Ident:
+			name := target.IdentField.Ident
+			v, ok := tc.FindVariableConsiderNest(name)
+			if !ok {
+				return nil, fmt.Errorf("未定義変数: %s", name)
+			}
+			if !isSameType(wrap(v.Type), valType) {
+				return nil, fmt.Errorf("代入先と代入元の型が異なる: %v, %v", wrap(v.Type), valType)
+			}
+			return nil, nil
+		default:
+			return nil, fmt.Errorf("未対応の代入先: %s", target.Kind.String())
+		}
 	default:
 		return andor(node)
 	}
@@ -301,6 +334,12 @@ func literal(node *parse.Node) ([]core.Type, error) {
 	switch node.Kind {
 	case parse.Parenthesis:
 	case parse.Ident:
+		name := node.IdentField.Ident
+		v, ok := tc.FindVariableConsiderNest(name)
+		if !ok {
+			return nil, fmt.Errorf("未定義変数: %s", name)
+		}
+		return wrap(v.Type), nil
 	case parse.Call:
 	default:
 		return wrap(node.LiteralField.Literal.GetKind()), nil
