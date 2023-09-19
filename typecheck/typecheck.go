@@ -184,7 +184,7 @@ func fn(node *parse.Node) ([]core.Type, error) {
 	}
 
 	// グローバルに戻す
-	tc.GoParent()
+	tc.GoGlobal()
 	return nil, nil
 }
 
@@ -341,6 +341,46 @@ func literal(node *parse.Node) ([]core.Type, error) {
 		}
 		return wrap(v.Type), nil
 	case parse.Call:
+		// 呼び出し側データ
+		name := node.CallField.Identifier.IdentField.Ident
+
+		var args []*parse.Node
+		var argVars []core.Type
+		if node.CallField.Args == nil {
+			args = []*parse.Node{}
+		} else {
+			args = node.CallField.Args.PolynomialField.Values
+			// 引数の型取得
+			for _, v := range args {
+				argVariableType, err := expr(v)
+				if err != nil {
+					return nil, err
+				}
+				argVars = append(argVars, argVariableType...)
+			}
+		}
+
+		// 呼び出し先の型データ
+		var paramVars []core.Type
+		called, ok := tc.FindFunctionConsiderNest(name, false)
+		if !ok {
+			return nil, fmt.Errorf("未定義関数: %s", name)
+		}
+		for _, param := range called.Params {
+			paramVars = append(paramVars, param.Type)
+		}
+
+		// 引数とパラメータの型が一致していることを
+		if !isSameType(argVars, paramVars) {
+			return nil, fmt.Errorf("与えられた引数と予想されていたパラメータが異なる: %v, %v", argVars, paramVars)
+		}
+
+		// 戻り値の型を取り出す
+		var returns []core.Type
+		for _, rt := range called.Returns {
+			returns = append(returns, rt.Type)
+		}
+		return returns, nil
 	default:
 		return wrap(node.LiteralField.Literal.GetKind()), nil
 	}
