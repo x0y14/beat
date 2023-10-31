@@ -38,3 +38,20 @@ func TestParseWork(t *testing.T) {
 	}
 	fmt.Println(nodes)
 }
+
+func TestParseWork2(t *testing.T) {
+	code := `
+	func main() {
+		if (c = isEof()) {}
+	}
+	`
+	head, err := tokenize.Tokenize(code)
+	if err != nil {
+		t.Fatal(err)
+	}
+	nodes, err := parse.Parse(head)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println(nodes)
+}
