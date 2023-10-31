@@ -111,6 +111,7 @@ func (tc *TypeChecker) FindFunctionInCurrent(name string, focus bool) (*TFunctio
 }
 
 func (tc *TypeChecker) FindFunctionConsiderNest(name string, focus bool) (*TFunction, bool) {
+	// mainから検索を書けたなら、mainになかった場合、グローバルへ探索範囲を広げる
 	// todo: test
 	f, ok := tc.FindFunctionInCurrent(name, focus)
 	if ok {
