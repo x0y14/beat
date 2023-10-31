@@ -2,8 +2,8 @@ package parse
 
 import (
 	"fmt"
-	"github.com/x0y14/beat/core"
-	"github.com/x0y14/beat/tokenize"
+	"github.com/x0y14/beat/compile/core"
+	"github.com/x0y14/beat/compile/tokenize"
 )
 
 var token *tokenize.Token

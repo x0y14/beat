@@ -2,8 +2,8 @@ package parse_test
 
 import (
 	"fmt"
-	"github.com/x0y14/beat/parse"
-	"github.com/x0y14/beat/tokenize"
+	"github.com/x0y14/beat/compile/parse"
+	"github.com/x0y14/beat/compile/tokenize"
 	"testing"
 )
 

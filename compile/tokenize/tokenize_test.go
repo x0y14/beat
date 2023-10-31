@@ -2,7 +2,7 @@ package tokenize
 
 import (
 	"github.com/stretchr/testify/assert"
-	"github.com/x0y14/beat/core"
+	"github.com/x0y14/beat/compile/core"
 	"testing"
 	"unicode/utf8"
 )

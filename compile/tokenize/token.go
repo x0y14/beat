@@ -2,7 +2,7 @@ package tokenize
 
 import (
 	"fmt"
-	"github.com/x0y14/beat/core"
+	"github.com/x0y14/beat/compile/core"
 )
 
 type Token struct {

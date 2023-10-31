@@ -1,7 +1,7 @@
 package typecheck
 
 import (
-	"github.com/x0y14/beat/core"
+	"github.com/x0y14/beat/compile/core"
 )
 
 type TFunction struct {
